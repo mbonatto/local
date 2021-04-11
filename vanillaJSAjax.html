@@ -1,0 +1,69 @@
+<h1> OKKK </h1>
+
+<script>
+
+/*
+https://httpbin.org/get
+https://httpbin.org/post
+*/
+
+
+function serialize(obj) {
+	var str = [];
+	for (var p in obj) {
+		if (obj.hasOwnProperty(p)) {
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		}
+	}
+	return str.join("&");
+}
+
+function isEmpty(obj) {
+	for(var prop in obj) {
+		if(obj.hasOwnProperty(prop)) {
+			return false;
+		}
+	}
+	return JSON.stringify(obj) === JSON.stringify({});
+}
+
+/**
+ * vanilla js GET Ajax 
+ * url string
+ * vars obj
+ */
+function getAjaxRequest(url, vars) {
+	var ajax = new XMLHttpRequest();
+	if(!isEmpty(vars)){
+		url = url + '?' + serialize(vars);
+	}	
+	ajax.open("GET", url, true);
+	ajax.send();
+	ajax.onreadystatechange = function() { 
+		if (ajax.readyState == 4 && ajax.status == 200) {
+			var data = ajax.responseText;
+			console.log(data);
+			console.log(ajax);
+		}
+	}
+}
+
+/**
+ * vanilla js POST Ajax 
+ * url string
+ * vars obj
+ */
+function postAjaxRequest(url, vars) {
+	var ajax = new XMLHttpRequest();
+	ajax.open("POST", url, true)
+	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	ajax.send(serialize(vars));
+	ajax.onreadystatechange = function() {
+		if (ajax.readyState == 4 && ajax.status == 200) {
+			var data = ajax.responseText;
+			console.log(data);
+			console.log(ajax);
+		}
+	}
+}
+</script>
